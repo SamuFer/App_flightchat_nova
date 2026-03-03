@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <h1 class="mb-3 text-primary">{{ title }}</h1>
+    <p class="lead">
+      Benvingut al <strong>Backend</strong> — pàgina de prova de l'app <span class="fw-bold text-warning">Flightchat</span>.
+    </p>
+  
+    <hr class="my-4">
+  
+    <div class="alert alert-info">
+      Aquesta és una interfície d'administració pensada per gestionar usuaris, missatges i configuració interna.
+    </div>
+  
+    <a href="/users" class="btn btn-primary">Gestionar Usuaris</a>
+    <a href="/users" class="btn btn-secondary ms-2">Administradors</a>
+
+
+{% endblock %}

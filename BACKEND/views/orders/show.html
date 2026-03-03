@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2 class="mb-3 text-primary">📝 Detall de la Comanda</h2>
+<hr>
+<div class="card">
+ 
+  <!-- 1. Informació del Vol -->
+  <h4 class="mt-1 text-secondary">1️⃣ Informació del Vol</h4>
+  <div class="ps-3">
+    <p><span class="fw-bold">Companyia Aèria:</span> <span class="text-dark">{{ order.companya_aerea }}</span></p>
+    <p><span class="fw-bold">Número de Vol:</span> <span class="text-dark">{{ order.num_vol }}</span></p>
+  </div>
+  <hr>
+
+  <!-- 2. Detalls de la Incidència -->
+  <h4 class="mt-3 text-secondary">2️⃣ Detalls de la Incidència (Menjar Faltant)</h4>
+  <div class="ps-3">
+    {% if order.menjar %}
+      <ul class="list-group">
+        {% for item in order.menjar %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><strong>Codi:</strong> {{ item.codi }}</span>
+            <span class="badge bg-danger rounded-pill">Falten {{ item.quantitat }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No s’ha registrat cap incidència amb el menjar.</p>
+    {% endif %}
+  </div>
+  <hr>
+
+  <!-- 3. Estat de la Comanda -->
+  <h4 class="mt-3 text-secondary">3️⃣ Estat Actual de la Comanda</h4>
+  <div class="ps-3">
+    <p><span class="fw-bold">Estat:</span> <span class="badge bg-info text-dark">{{ order.estat }}</span></p>
+  </div>
+  <hr>
+
+  <!-- 4. Equip Assignat -->
+  <h4 class="mt-3 text-secondary">4️⃣ Equip Assignat per Resoldre la Incidència</h4>
+  <div class="ps-3">
+    {% if order.assignar_equip %}
+      <ul class="list-group">
+        {% for membre in order.assignar_equip %}
+          <li class="list-group-item">
+            {{ membre.nom }} {{ membre.cognoms }}
+            <span class="text-muted">[{{ membre.rol }}]</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Encara no s’ha assignat cap equip.</p>
+    {% endif %}
+  </div>
+  <hr>
+
+  <!-- 5. Autor de la Comanda -->
+  <h4 class="mt-3 text-secondary">5️⃣ Responsable de la Comanda</h4>
+  <div class="ps-3">
+    <p><span class="fw-bold">Nom:</span> {{ order.autor.nom }} {{ order.autor.cognoms }}</p>
+    <p><span class="fw-bold">Rol:</span> {{ order.autor.rol }}</p>
+  </div>
+
+</div>
+ 
+  <a href="/orders" class="btn btn-primary my-2">🔙 Tornar a Llista de comandes</a>
+ 
+
+
+{% endblock %}

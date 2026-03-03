@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Editar rol</h2>
+
+  <form action="/roles/update/{{ role._id }}?_method=PUT" method="POST">
+
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom del rol</label>
+      <input type="text" class="form-control" id="nom" name="nom" value="{{ role.nom }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="permisos" class="form-label">Permisos</label>
+      <textarea class="form-control" id="permisos" name="permisos" rows="3" required>{{ role.permisos }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualitzar</button>
+    <a href="/roles" class="btn btn-secondary">Cancel·lar</a>
+  </form>
+</div>
+{% endblock %}

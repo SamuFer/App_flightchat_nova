@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="mb-4">Gestió d’usuaris</h1>
+
+<a href="/users/create" class="btn btn-primary mb-3">+ Crear nou usuari</a>
+<div class="row">
+  {% for user in users %}
+  <div class="col-12 col-md-6 col-lg-4 mb-3">
+    <div class="card h-100 shadow-sm p-3" style="max-width: 100%;">
+      <div class="card-body p-2 d-flex flex-column">
+        <!-- Nom + Correu + Avatar alineats -->
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3 gap-2 text-center text-sm-start">
+          <div class="flex-grow-1">
+            <h5 class="card-title mb-0 text-truncate" title="{{ user.nom }} {{ user.cognoms }}">
+              {{ user.nom }} {{ user.cognoms }}
+            </h5>
+            <p class="text-muted mb-0 small text-truncate" title="{{ user.email }}"><strong>📩</strong> {{ user.email }}</p>
+          </div>
+
+          {% if user.avatar %}
+            <img src="data:image/png;base64,{{ user.avatar | b64encode }}" alt="Avatar"
+              class="rounded-circle shadow-sm border" style="width: 50px; height: 50px; object-fit: cover;">
+          {% else %}
+            <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm border"
+                 style="width: 50px; height: 50px; font-size: 0.65rem;">
+              Sense<br>Avatar
+            </div>
+          {% endif %}
+        </div>
+        <!-- Detalls addicionals -->
+        <ul class="list-unstyled small mb-2">
+          <li><strong>📞</strong> {{ user.telefon }}</li>
+          <li><strong>🕒 Creat:</strong> {{ user.createdAt | formatDate('yyyy-MM-dd') }}</li>
+          <li><strong>🔄 Modif.:</strong> {{ user.updatedAt | formatDate('yyyy-MM-dd') }}</li>
+          <li><strong>🎖️ Rol:</strong> {{ user.role_id.nom }}</li>
+          <li>
+            <strong>💼 Estat:</strong>
+            {% if user.estat_compte %}
+            <span class="badge bg-success">Actiu</span>
+            {% else %}
+            <span class="badge bg-danger">Inactiu</span>
+            {% endif %}
+          </li>
+        </ul>
+
+
+
+        {% if user.email != loggedInEmail %}
+        <div class="mt-auto d-flex justify-content-end gap-1">
+          <a href="/users/{{ user._id }}" class="btn btn-sm btn-outline-info" title="Veure">👁️</a>
+          <a href="/users/edit/{{ user._id }}" class="btn btn-sm btn-outline-warning" title="Editar">✏️</a>
+          <form action="/users/delete/{{ user._id }}?_method=DELETE" method="POST"
+            onsubmit="return confirm('Estàs segur que vols eliminar aquest usuari?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">🗑️</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

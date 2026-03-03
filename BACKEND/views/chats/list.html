@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Gestió de Chats (Comandes)</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>ID</th>
+          <th>Companyia Aèria</th>
+          <th>Núm. Vol</th>
+          <th>Estat del Chat</th>
+          <th>Participants assignats</th>
+          <th>Procés comanda</th>
+          <th>Data de Creació</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for chat in chats %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ chat._id }}</td>
+            <td>{{ chat.companya_aerea }}</td>
+            <td>{{ chat.num_vol }}</td>
+            <td>
+              {% if chat.estat == 'activa' %}
+                <span class="badge bg-success">{{chat.estat}}</span>
+              {% else %}
+                <span class="badge bg-danger">{{chat.estat}}</span>
+              {% endif %}
+            </td>
+
+
+            <td>
+              <ul class="mb-0 ps-3">
+                {% for user in chat.assignar_equip %}
+                  <li class="{% if chat.nousAssignatsIds.includes(user._id.toString()) %} bg-warning-subtle rounded px-2 {% endif %}">
+                    {{ user.nom }} {{ user.cognoms }} ({{ user.rol }})
+                  </li>
+                {% endfor %}
+              </ul>
+            </td>
+            
+            <td>
+              {% if chat.estat == 'activa' %}
+                <span class="badge bg-info">{{ chat.estatProcés }}</span>
+              {% else %}
+                <span class="badge bg-secondary">sense estat</span>
+              {% endif %}
+            </td>
+
+            <td>{{ chat.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</td>
+            <td>
+              <a href="#" class="btn btn-info btn-sm mb-1">👁️ Veure</a>
+
+              {% if chat.estat == 'activa' %}
+              <form action="/chats/{{ chat._id }}/finalitzar" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-success btn-sm mb-1">✅ Finalitzar chat</button>
+              </form>
+
+              <button class="btn btn-primary btn-sm mb-1"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalAssignar{{ chat._id }}">
+                ✏️ Participants
+              </button>
+              {% endif %}
+
+              <!-- <form action="/chats/{{ chat._id }}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur que vols eliminar aquest chat?')">
+                  🗑️ Eliminar
+                </button>
+              </form> -->
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- Modal Assignar Usuaris -->
+{% for chat in chats %}
+  {% include "partials/modal_assignar.html" %}     
+{% endfor %}
+
+{% endblock %}

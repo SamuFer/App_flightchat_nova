@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+  <h2 class="mb-1 text-primary">👤 detall de l'Usuari</h2>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start">
+
+      <!-- Avatar -->
+      <div class="me-md-4 mb-4 mb-md-0 text-center">
+        {% if useres.avatar %}
+          <img src="data:image/png;base64,{{ useres.avatar | b64encode }}" alt="Avatar de {{ useres.nom }}" class="img-thumbnail rounded-circle border border-2" width="150" height="150">
+        {% else %}
+          <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+            <span class="fs-4">Sense Avatar</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Informació del perfil -->
+      <div class="flex-fill">
+        <h4 class="card-title">{{ useres.nom }} {{ useres.cognoms }}</h4>
+        <p><strong>📧 Email:</strong> {{ useres.email }}</p>
+        <p><strong>🛡️ Rol:</strong> {{ useres.role_id.nom }}</p>
+        <p><strong>📞 Telèfon:</strong> {{ useres.telefon }}</p>
+        <p><strong>🎂 Data de naixement:</strong> {{ useres.data_naixement | formatDate('yyyy-MM-dd') }}</p>
+        <p><strong>🔒 Estat del compte:</strong> 
+          {% if useres.estat_compte %}
+            <span class="badge bg-success">Actiu</span>
+          {% else %}
+            <span class="badge bg-danger">Inactiu</span>
+          {% endif %}
+        </p>
+        <p><strong>🕒 Creat el:</strong> {{ useres.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+        <p><strong>🔄 Última actualització:</strong> {{ useres.updatedAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+
+        <!-- Accions -->
+        <div class="mt-3">
+          <a href="/users/edit/{{ useres._id }}" class="btn btn-outline-warning me-2">✏️ Editar</a>
+          {% if useres.email != loggedInEmail %}
+            <form action="/users/delete/{{ useres._id }}?_method=DELETE" method="POST" class="d-inline">
+              <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Estàs segur que vols eliminar l\'usuari {{ useres.nom }}?')">🗑️ Eliminar</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="/users" class="btn btn-primary mt-4">← Tornar a la llista</a>
+
+{% endblock %}

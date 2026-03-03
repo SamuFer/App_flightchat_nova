@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Editar Comanda</h2>
+
+  <form action="/orders/update/{{ order._id }}?_method=PUT" method="POST">
+
+    <div class="mb-3">
+      <label for="companya_aerea" class="form-label">Companyia Aèria</label>
+      <input type="text" class="form-control" id="companya_aerea" name="companya_aerea" value="{{ order.companya_aerea }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="num_vol" class="form-label">Número de Vol</label>
+      <input type="text" class="form-control" id="num_vol" name="num_vol" value="{{ order.num_vol }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Menjar</label>
+      {% for item in order.menjar %}
+        <div class="row mb-2">
+          <div class="col">
+            <input type="text" class="form-control" name="menjar[{{ loop.index0 }}][codi]" value="{{ item.codi }}" required>
+          </div>
+          <div class="col">
+            <input type="number" class="form-control" name="menjar[{{ loop.index0 }}][quantitat]" value="{{ item.quantitat }}" required>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Data de Creació</label>
+      <input type="text" class="form-control" value="{{ dataCreacio }}" disabled>
+    </div>
+
+     <!-- Equip Assignat -->
+    <select id="assignar_equip" name="assignar_equip" multiple required class="form-select assignar-equip-select">
+      {% for usuari in usuaris %}
+        <option value="{{ usuari._id }}"
+          {% if usuari._id in assignatsIds %}selected{% endif %}>
+          {% if usuari._id in assignatsIds %}🟢{% endif %}
+          {{ usuari.nom }} {{ usuari.cognoms }} ({{ usuari.role_id.nom or "Sense rol"}})
+        </option>
+      {% endfor %}
+    </select>
+
+
+    <button type="submit" class="btn btn-success">Actualitzar Comanda</button>
+    <a href="/orders" class="btn btn-secondary">Cancel·lar</a>
+  </form>
+</div>
+{% endblock %}

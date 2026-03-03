@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Crear nou rol</h2>
+
+  <form action="/roles" method="POST">
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom del rol</label>
+      <input type="text" class="form-control" id="nom" name="nom" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="permisos" class="form-label">Permisos</label>
+      <textarea class="form-control" id="permisos" name="permisos" rows="3" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a href="/roles" class="btn btn-secondary">Cancel·lar</a>
+  </form>
+</div>
+{% endblock %}

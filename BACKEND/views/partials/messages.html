@@ -1,0 +1,11 @@
+{% if (success_msg != '') %}
+  <div class="alert alert-success flash-message">{{ success_msg }}</div>
+{% endif %}
+
+{% if (error_msg != '') %}
+  <div class="alert alert-danger flash-message">{{ error_msg }}</div>
+{% endif %}
+
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}

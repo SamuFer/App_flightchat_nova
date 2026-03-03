@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+  <h2>Editar informacio del Perfil</h2>
+
+  <form action="/profile/update?_method=PUT" method="POST">
+    <div class="mb-3">
+      <label>Nom</label>
+      <input type="text" name="nom" class="form-control" value="{{ user.nom }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Cognoms</label>
+      <input type="text" name="cognoms" class="form-control" value="{{ user.cognoms }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Telèfon</label>
+      <input type="text" name="telefon" class="form-control" value="{{ user.telefon }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label>Data de naixement</label>
+      <input type="date" name="data_naixement" class="form-control" value="{{ data_naixement_format }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Rol</label>
+      <input type="text" class="form-control" value="{{ user.role_id.nom }}" disabled>
+    </div>
+    
+    <div class="mb-3">
+        <label>Estat de Compte</label>
+        <input type="text" class="form-control" value="{{ 'Actiu' if user.estat_compte else 'Inactiu' }}" disabled>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualitzar informacio personal</button>
+    <a href="/profile" class="btn btn-secondary">Tornar a profile</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+  <h2 class="mb-4 text-primary">👤 La Meva Perfil</h2>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body d-flex flex-column flex-md-row align-items-start">
+
+      <!-- Avatar -->
+      <div class="me-md-4 mb-4 mb-md-0 text-center">
+        {% if user.avatar %}
+          <img src="data:image/png;base64,{{ user.avatar | b64encode }}" alt="Avatar de {{ user.nom }}" class="img-thumbnail rounded-circle border border-2" width="150" height="150">
+        {% else %}
+          <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+            <span class="fs-6">Sense Avatar</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Informació del perfil -->
+      <div class="flex-fill">
+        <h4 class="card-title">{{ user.nom }} {{ user.cognoms }}</h4>
+        <p><strong>📧 Email:</strong> {{ user.email }}</p>
+        <p><strong>🛡️ Rol:</strong> {{ user.role_id.nom }}</p>
+        <p><strong>📞 Telèfon:</strong> {{ user.telefon }}</p>
+        <p><strong>🎂 Data de naixement:</strong> {{ user.data_naixement | formatDate('yyyy-MM-dd') }}</p>   
+        <p><strong>🕒 Creat el:</strong> {{ user.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+        <p><strong>🔄 Última actualització:</strong> {{ user.updatedAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+        <p><strong>🔒 Estat del compte:</strong> 
+          {% if user.estat_compte %}
+            <span class="badge bg-success">Actiu</span>
+          {% else %}
+            <span class="badge bg-danger">Inactiu</span>
+          {% endif %}
+        </p>
+
+        <!-- Botó d'edició -->
+        <div class="mt-4">
+          <a href="/profile/edit" class="btn btn-outline-primary">✏️ Editar Perfil</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="/" class="btn btn-secondary mt-4">← Tornar a l'inici</a>
+
+{% endblock %}

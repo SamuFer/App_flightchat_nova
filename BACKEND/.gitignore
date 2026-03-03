@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Entorno
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Build (si algún día se compila)
+dist/
+build/
+
+# Docker (por si se usa en el futuro)
+docker-compose.override.yml

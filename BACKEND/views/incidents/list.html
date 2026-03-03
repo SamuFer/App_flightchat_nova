@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Notificacio d'incidències</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Usuari_remitent</th>
+          <th>Vol</th>
+          <th>Estat</th>
+          <th>Data creació</th>
+          <th>Revisio</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for incidencia in incidencies %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ incidencia.usuari.nom }} {{ incidencia.usuari.cognoms }}</td>
+            <td>{{ incidencia.num_vol }}</td>
+            <td>
+              {% if incidencia.estat == 'acceptada' %}
+                <span class="badge bg-success">{{incidencia.estat}}</span>
+              {% elif incidencia.estat == 'pendent' %}
+                <span class="badge bg-warning">{{incidencia.estat }}</span>
+              {% else %}
+                <span class="badge bg-danger">{{incidencia.estat }}</span>
+              {% endif %}
+            </td>
+            <td>{{ incidencia.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</td>
+            <td>
+              {% if incidencia.estat == 'pendent' %}
+               <!-- Revisar (Acceptar/Rebutjar) -->
+              <form action="/incidents/{{ incidencia.id }}/review?_method=PUT" method="POST" class="d-inline">
+                <input type="hidden" name="novaEstat" value="acceptada">
+                <button type="submit" class="btn btn-success btn-sm">Acceptar i crear comanda</button>
+              </form>
+              <form action="/incidents/{{ incidencia.id }}/review?_method=PUT" method="POST" class="d-inline ms-1">
+                <input type="hidden" name="novaEstat" value="rebutjada">
+                <button type="submit" class="btn btn-danger btn-sm">Rebutjar</button>
+              </form>
+              {% else %}
+                <!-- Revisada -->
+                <span class="badge bg-secondary">Revisada</span>
+              {% endif %}
+            </td>
+            <td>
+               <!-- Detall -->
+              <a href="/incidents/{{ incidencia.id }}" class="btn btn-info btn-sm ms-1">👁️</a>
+
+              <form action="/incidents/delete/{{ incidencia.id }}?_method=DELETE" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estàs segur que vols eliminar aquest incidencia?')">
+                  🗑️
+                </button>
+              </form>
+            </td> 
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

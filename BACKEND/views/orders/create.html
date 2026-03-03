@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Crear nova comanda</h2>
+
+  <form action="/orders" method="POST">
+    <!-- Campo oculto con el autor (usuario logueado) -->
+    <input type="hidden" name="autor" value="{{ loggedInUserId }}">
+
+    <!-- Companyia Aèria -->
+    <div class="mb-3">
+      <label for="companya_aerea" class="form-label">Companyia Aèria</label>
+      <input type="text" class="form-control" id="companya_aerea" name="companya_aerea"
+             value="{{ incidenciaData.companya_aerea | default('') }}" required>
+    </div>
+
+    <!-- Número de vol -->
+    <div class="mb-3">
+      <label for="num_vol" class="form-label">Número de vol</label>
+      <input type="text" class="form-control" id="num_vol" name="num_vol"
+             value="{{ incidenciaData.num_vol | default('') }}" required>
+    </div>
+
+    <!-- Menjar -->
+    <div class="mb-3">
+      <label class="form-label">Menjar</label>
+      <div id="menjarContainer">
+        {% if incidenciaData.menjar %}
+          {% for item in incidenciaData.menjar %}
+            <div class="row mb-2">
+              <div class="col">
+                <input type="text" class="form-control" name="menjar[{{ loop.index0 }}][codi]" value="{{ item.codi }}" placeholder="Codi" required>
+              </div>
+              <div class="col">
+                <input type="number" class="form-control" name="menjar[{{ loop.index0 }}][quantitat]" value="{{ item.quantitat }}" placeholder="Quantitat" required>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="row mb-2">
+            <div class="col">
+              <input type="text" class="form-control" name="menjar[0][codi]" placeholder="Codi" required>
+            </div>
+            <div class="col">
+              <input type="number" class="form-control" name="menjar[0][quantitat]" placeholder="Quantitat" required>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Assignar Equip -->
+    <div class="mb-3">
+        <label for="assignar_equip" class="form-label">Assignar Equip</label>
+        <select class="form-select assignar-equip-select" name="assignar_equip" id="assignar_equip" multiple>
+            {% for usuari in usuaris %}
+            <option value="{{ usuari._id }}">
+                {{ usuari.nom }} {{ usuari.cognoms }} - {{ usuari.role_id.nom or "Sense rol" }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Crear Comanda</button>
+    <a href="/orders" class="btn btn-secondary">Cancel·lar</a>
+  </form>
+</div>
+{% endblock %}

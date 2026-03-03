@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Gestió de Menús</h2>
+
+  <form action="/meals/create" method="POST" class="row g-3 mb-4">
+    <div class="col-md-10">
+      <input type="text" name="codi" class="form-control" placeholder="Codi de menú" required>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">+ Afegir</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Codi de Menú</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in meals %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ m.codi }}</td>
+            <td>
+              <form action="/meals/delete/{{ m._id }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Segur que vols eliminar aquest menú?')">
+                  🗑️
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

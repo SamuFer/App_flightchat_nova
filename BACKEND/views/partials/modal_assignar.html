@@ -1,0 +1,26 @@
+{# templates/partials/modal_assignar.html #}
+<div class="modal fade" id="modalAssignar{{ chat._id }}" tabindex="-1" aria-labelledby="assignarModalLabel{{ chat._id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="/chats/{{ chat._id }}/assignar?_method=PUT" method="POST" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignarModalLabel{{ chat._id }}">Anidar Usuaris al chat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+      </div>
+      <div class="modal-body">
+        <select name="assignar_equip" multiple class="form-select assignar-equip-select" required>
+          {% for usuari in usuaris %}
+            <option value="{{ usuari._id }}"
+              {% if usuari._id in chat.assignatsIds %}selected{% endif %}>
+              {% if usuari._id in chat.assignatsIds %}🟢{% endif %}
+              {{ usuari.nom }} {{ usuari.cognoms }} ({{ usuari.role_id.nom or "Sense rol"}})
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

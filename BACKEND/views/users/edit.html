@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+  <h2>Editar Usuari</h2>
+
+  <form action="/users/update/{{ user._id }}?_method=PUT" method="POST">
+    <div class="mb-3">
+      <label>Nom</label>
+      <input type="text" name="nom" class="form-control" value="{{ user.nom }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Cognoms</label>
+      <input type="text" name="cognoms" class="form-control" value="{{ user.cognoms }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Telèfon</label>
+      <input type="text" name="telefon" class="form-control" value="{{ user.telefon }}" required>
+    </div>
+    
+    <div class="mb-3">
+      <label>Data de naixement</label>
+      <input type="date" name="data_naixement" class="form-control" value="{{ data_naixement_format }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label>Rol</label>
+      {% if user.email != loggedInEmail %}
+        <select name="role_id" class="form-select">
+          {% for role in roles %}
+            <option value="{{ role._id }}" {% if role._id.toString() == user.role_id._id.toString() %}selected{% endif %}>{{ role.nom }}</option>
+          {% endfor %}
+        </select>
+      {% else %}
+        <input type="text" class="form-control" value="{{ user.role_id.nom }}" disabled>
+      {% endif %}
+    </div>
+    
+    <div class="mb-3">
+      <label>Estat del compte</label>
+      {% if user.email != loggedInEmail %}
+        <select name="estat_compte" class="form-select">
+          <option value="true" {% if user.estat_compte %}selected{% endif %}>Actiu</option>
+          <option value="false" {% if not user.estat_compte %}selected{% endif %}>Inactiu</option>
+        </select>
+      {% else %}
+        <input type="text" class="form-control" value="{{ 'Actiu' if user.estat_compte else 'Inactiu' }}" disabled>
+        <!-- También puedes usar un <p> si no quieres campo de formulario -->
+        <!-- <p class="form-control-plaintext">{{ 'Actiu' if user.estat_compte else 'Inactiu' }}</p> -->
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Actualitzar</button>
+    <a href="/users" class="btn btn-secondary">Cancel·lar</a>
+  </form>
+</div>
+{% endblock %}

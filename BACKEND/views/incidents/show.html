@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <a href="/incidents" class="btn btn-outline-secondary mb-4">← Tornar al llistat d'incidències</a>
+
+  <!-- Notificació visual -->
+  <div class="alert alert-warning shadow-sm">
+    <h4 class="alert-heading mb-3">📣 Notificació d'Incidència Detectada</h4>
+    <p class="mb-0"><strong>Estat Actual:</strong> <span class="badge bg-{{ 'success' if incidencies.estat == 'Resolut' else 'danger' }}">{{ incidencies.estat }}</span></p>
+    <small class="text-muted">Notificació enviada: {{ incidencies.notificacio_enviada }}</small>
+  </div>
+
+  <!-- Dades de l'usuari -->
+  <div class="mb-4">
+    <h5 class="text-primary mt-4">👤 Informació del Remitent</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Nom:</strong> {{ incidencies.usuari.nom }} {{ incidencies.usuari.cognoms }}</li>
+      <li class="list-group-item"><strong>Email:</strong> {{ incidencies.usuari.email }}</li>
+      <li class="list-group-item"><strong>Rol:</strong> {{ incidencies.usuari.rol }}</li>
+    </ul>
+  </div>
+
+  <!-- Dades del vol -->
+  <div class="mb-4">
+    <h5 class="text-primary mt-4">✈️ Dades del Vol</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>Companyia Aèria:</strong> {{ incidencies.companya_aerea }}</li>
+      <li class="list-group-item"><strong>Número de Vol:</strong> {{ incidencies.num_vol }}</li>
+    </ul>
+  </div>
+
+  <!-- Codis de menjar -->
+  <div class="mb-4">
+    <h5 class="bg-warning text-primary mt-4">🍱 Menjar Afectat (faltant)</h5>
+    {% if incidencies.menjar %}
+      <ul class="list-group">
+        {% for item in incidencies.menjar %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Codi: <strong>{{ item.codi }}</strong>
+            <span class="badge bg-danger rounded-pill">Quantitat: {{ item.quantitat }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No s’han registrat codis de menjar.</p>
+    {% endif %}
+  </div>
+
+  <!-- Dates -->
+  <div class="mb-3">
+    <h5 class="text-primary mt-4">🕒 Registre Temporal</h5>
+    <p><strong>Data de Creació:</strong> {{ incidencies.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+    <p><strong>Última Modificació:</strong> {{ incidencies.updatedAt | formatDate('yyyy-MM-dd HH:mm') }}</p>
+  </div>
+{% endblock %}

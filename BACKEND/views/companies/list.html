@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Gestió de Companyies</h2>
+
+  <form action="/companies/create" method="POST" class="row g-3 mb-4">
+    <div class="col-md-5">
+      <input type="text" name="companyia" class="form-control" placeholder="Nom de la companyia" required>
+    </div>
+    <div class="col-md-5">
+      <input type="text" name="vols" class="form-control" placeholder="Vols separats per comes">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary w-100">+ Afegir</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Companyia</th>
+          <th>Vols</th>
+          <th>Accions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in companies %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ c.companyia }}</td>
+            <td>{{ c.vols | join(', ') }}</td>
+            <td>
+              <form action="/companies/delete/{{ c._id }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Segur que vols eliminar aquesta companyia?')">
+                  🗑️
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Gestió de Comandes</h2>
+
+  <a href="/orders/create" class="btn btn-primary mb-3">+ Crear nova comanda</a>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Companyia Aèria</th>
+        <th>Vol</th>
+        <th>Autor_comanda</th>
+        <th>Equip Assignat</th>
+        <th>Estat_comanda</th>
+        <th>data_creacio</th>
+        <th>Accions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ order.companya_aerea }}</td>
+          <td>{{ order.num_vol }}</td>
+          <td>{{ order.autor.nom }}, rol:{{ order.autor.rol  }}</td>
+          <td>
+            {% if order.assignar_equip %}
+              {% for membre in order.assignar_equip %}
+                <span class="badge bg-secondary">{{ membre.nom }} {{membre.cognoms}}</span>
+                <span class="badge bg-warning">|</span>
+              {% endfor %}
+            {% else %}
+              —
+            {% endif %}
+          </td>
+          <td>
+            {% if order.estat == 'activa' %}
+                <span class="badge bg-success">{{order.estat}}</span>
+              {% else %}
+                <span class="badge bg-danger">{{order.estat }} amb exit</span>
+              {% endif %}
+          </td>
+          <td>{{ order.createdAt | formatDate('yyyy-MM-dd HH:mm') }}</td>
+          <td>
+            <a href="/orders/{{ order._id }}" class="btn btn-info btn-sm">👁️</a>
+            <a href="/orders/edit/{{ order._id }}" class="btn btn-warning btn-sm">✏️</a>
+            <form action="/orders/delete/{{ order._id }}?_method=DELETE" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Segur que vols eliminar aquesta comanda?')">
+                🗑️
+              </button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
