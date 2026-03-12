@@ -1,0 +1,7 @@
+{
+  "name": "flightchat",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

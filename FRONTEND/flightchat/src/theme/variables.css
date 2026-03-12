@@ -1,0 +1,47 @@
+/* For information on how to create your own theme, please see:
+http://ionicframework.com/docs/theming/ */
+
+ion-content {
+    --background: transparent !important;
+  }
+  
+
+ion-input {
+    --background: transparent !important;
+  }
+  ion-textarea {
+    --background: transparent !important;
+  }
+  ion-card {
+    --background: transparent !important;
+  }
+  ion-card-header {
+    --background: transparent !important;
+  }   
+  ion-card-content {
+    --background: transparent !important;
+  }
+  ion-item {
+    --background: transparent !important;
+  }
+  ion-label {
+    --background: transparent !important;
+  }
+  ion-button {
+    --background: transparent !important;
+  }
+  ion-list {
+    --background: transparent !important;
+  }
+  ion-list-header {
+    --background: transparent !important;
+  }
+  ion-searchbar {
+    --background: transparent !important;
+  }
+  ion-segment {
+    --background: transparent !important;
+  }
+  ion-segment-button {
+    --background: transparent !important;
+  }       
